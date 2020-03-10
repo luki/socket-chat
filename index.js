@@ -2,12 +2,16 @@ var app = require("express")();
 var http = require("http").createServer(app);
 var io = require("socket.io")(http);
 
+var port = process.env.PORT || 8080;
+
 app.get("/", (req, res) => {
     res.send("<h1>Hello</h1>");
 });
 
 io.on("connection", (socket) => {
     console.log("User connected")
+
+    socket.emit("message", "{\"message\": \"hello\"}")
 
     socket.on("disconnect", () => {
       console.log("User disconnected")
@@ -20,6 +24,6 @@ io.on("connection", (socket) => {
     })
 });
 
-http.listen(3000, () => {
+http.listen(port, () => {
     console.log("Hi");
 });
